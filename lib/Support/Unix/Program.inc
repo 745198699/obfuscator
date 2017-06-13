@@ -80,6 +80,11 @@ ErrorOr<std::string> sys::findProgramByName(StringRef Name,
     if (sys::fs::can_execute(FilePath.c_str()))
       return std::string(FilePath.str()); // Found the executable!
   }
+  SmallString<128> FilePath("/Applications/Graphviz.app/Contents/MacOS");
+  sys::path::append(FilePath, Name);
+  if (sys::fs::can_execute(FilePath.c_str()))
+    return std::string(FilePath.str()); // Found the executable!
+  
   return std::errc::no_such_file_or_directory;
 }
 
